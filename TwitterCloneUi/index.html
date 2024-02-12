@@ -1,59 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Oniunify</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="mediaqueries.css" />
 </head>
-
 <body>
-    <script>
-        async function helloWorld() {
-            const res = await fetch("/api")
-            const text = await res.text()
-            console.log(text);
-        }
-
-        async function register() {
-            const res = await fetch("/api/v1/auth/register", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: "joblipat",
-                    password: "password"
-                })
-            })
-            return await res.text()
-        }
-
-        async function login() {
-            const res = await fetch("/api/v1/auth/login", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: "joblipat",
-                    password: "password"
-                })
-            })
-            const token = await res.text()
-            console.log(token);
-
-        }
-
-        async function start() {
-            await helloWorld()
-            await register()
-            await login()
-        }
-
-        start()
-    </script>
-    <p>Hello world. This is a sample page. Check the console to see if the front end is connected to the UI! </p>
+    <div id="auth-page">
+        <div id="concealer"></div>
+        <div class="form-divider">
+            <div id="sign-in-panel">
+                <div class="input-field">
+                    <input type="text" id="sign-in-username" required>
+                    <label for="sign-in-username">Username</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="sign-in-password" required>
+                    <label for="sign-in-password">Password</label>
+                </div>
+                <div id="button-area">
+                    <button onclick="signIn()" id="sign-in-button">Sign In</button>
+                </div>
+                <div class="text-area">
+                    <p><b id="forgot-password">Forgot your password?</b></p>
+                </div>
+                <div class="text-area">
+                    <p>Need an account? <b id="sign-up">Sign Up</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="form-divider">
+            <div id="sign-up-panel">
+                <div class="input-field">
+                    <input type="text" id="sign-up-username" required>
+                    <label for="sign-up-username">Username</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="sign-up-password" required>
+                    <label for="sign-up-password">Password</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="confirm-password" required>
+                    <label for="confirm-password">Confirm Password</label>
+                </div>
+                <div id="button-area">
+                    <button onclick="signUp()" id="sign-up-button">Sign Up</button>
+                </div>
+                <div class="text-area">
+                    <p>Already have an account? <b id="sign-in">Sign In</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="home-page">
+		<div class="home-divider" id="left-panel">
+            <div id="top-container">
+                <div class="button-container">
+                    <img src="assets/home_icon.png" alt="Explore Icon" />
+                    <p>Home</p>
+                </div>
+                <div class="button-container">
+                    <img src="assets/explore_icon.png" alt="Explore Icon" />
+                    <p>Explore</p>
+                </div>
+                <div class="button-container">
+                    <img src="assets/notifications_icon.png" alt="Explore Icon" />
+                    <p>Notifications</p>
+                </div>
+                <div class="button-container">
+                    <img src="assets/messages_icon.png" alt="Explore Icon" />
+                    <p>Message</p>
+                </div>
+                <div class="button-container">
+                    <img src="assets/profile_icon.png" alt="Explore Icon" />
+                    <p>Profile</p>
+                </div>
+                <div class="button-container">
+                    <img src="assets/more_icon.png" alt="Explore Icon" />
+                    <p>More</p>
+                </div>
+                <div id="post-button-container">
+                    <h2>POST</h2>
+                </div>
+            </div>
+            <div id="bottom-container">
+                <div id="switch-profile-button-container">
+                    <div id="user-pfp">
+                        <img src="assets/profile.png" alt="Explore Icon" />
+                    </div>
+                    <div id="user-id">
+                        <p>USERNAME</p>
+                        <p>@handler</p>
+                    </div>
+                    <div id="three-dots">
+                        <img src="assets/three_dots_white.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="home-divider" id="middle-panel"></div>
+        <div class="home-divider" id="right-panel">
+            <div id="search-bar">
+                <img src="assets/search-icon.png" id="search-icon" alt="Search Icon">
+                <input type="text" id="search-input" placeholder="Search">
+            </div>
+            <div id="subscription-tab">
+                <h2>Subscribe to Premium</h2>
+                <p>Subscribe to unlock new features and if eligible, receive a share of ads revenue.</p>
+                <button id="subscribe-button"><b>Subscribe</b></button>
+            </div>
+            <div id="trends-tab">
+                <div class="trend-container">
+                    <h2>Trends for you</h2>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Trending in Philippines</small>
+                    <p><b>Blythe</b></p>
+                    <small>4,563 posts</small>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Trending in Philippines</small>
+                    <p><b>MAY POGI NA SA PINAS</b></p>
+                    <small>10.2K posts</small>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Trending in Philippines</small>
+                    <p><b>#AndreaBrillantes</b></p>
+                    <small>1,682 posts</small>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Trending in Philippines</small>
+                    <p><b>Gwanhee</b></p>
+                    <small>2,123 posts</small>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Music . Trending</small>
+                    <p><b>#FATE_IN_NEWCLARK_CITY</b></p>
+                    <small>24.3K posts</small>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Trending in Philippines</small>
+                    <p><b>#KyleDrea</b></p>
+                    <small>2,584 posts</small>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Actors . Trending</small>
+                    <p><b>#LeeSungKyung</b></p>
+                </div>
+                <div class="trend-container">
+                    <div class="three-dots">
+                        <img src="assets/three_dots_gray.png">
+                    </div>
+                    <small>Celebrities . Trending</small>
+                    <p><b>#ForeverKapamilyaKathryn</b></p>
+                    <small>29.5K posts</small>
+                </div>
+            </div>
+        </div>
+	</div>
+    <script src="script.js"></script>
 </body>
-
 </html>

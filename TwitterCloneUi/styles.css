@@ -1,0 +1,452 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+}
+
+html {
+    display: flex;
+    background-image: url(assets/background_image.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    scroll-behavior: smooth;
+}
+
+#auth-page {
+    position: relative;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#concealer {
+    position: absolute;
+    top: 100vh;
+    left: 100vw;
+    width: 100vw;
+    height: calc(100vh * 2);
+    background: linear-gradient(-45deg, #DE0447, #6325B7);
+    border-radius: 824px 0px 824px 0px;
+    z-index: 2;
+    transition: left 0.5s, top 0.5s
+}
+
+.form-divider {
+    position: relative;
+    min-width: 50vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sign-in-panel {
+    height: 430px;
+}
+
+#sign-up-panel {
+    height: 560px;
+}
+
+#sign-in-panel,
+#sign-up-panel {
+    width: 520px;
+    background-color: rgb(255, 255, 255, 0.4);
+    border: 3px solid rgb(255, 255, 255, 0.4);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transform: scale(0);
+    transition: transform 0.5s ease;
+}
+
+.input-field,
+#button-area,
+.text-area {
+    position: relative;
+    margin: 15px 0;
+}
+
+.input-field label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #161B2B;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.input-field input {
+    width: 400px;
+    height: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #161B2B;
+    padding: 0 10px;
+    background-color: #efefef;
+    border: 3px solid transparent;
+    outline: #efefef;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.input-field input:focus,
+.input-field input:valid {
+    border-color: #DE0447;
+}
+
+.input-field input:focus~label,
+.input-field input:valid~label {
+    top: 0;
+    font-size: 12px;
+    color: white;
+    background-color: #DE0447;
+    border-radius: 5px;
+}
+
+#auth-page button {
+    width: 425px;
+    height: 50px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #DE0447;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.5s ease;
+}
+
+#auth-page button:hover {
+    transform: translateY(-2px);
+}
+
+#forgot-password {
+    cursor: default;
+}
+
+#sign-in,
+#sign-up {
+    cursor: pointer;
+}
+
+#home-page {
+    position: relative;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.home-divider {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+}
+
+#left-panel {
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid #FFFFFF;
+}
+
+#top-container {
+    height: 80vh;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+#bottom-container {
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+
+.button-container {
+    width: 210px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.button-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 210px;
+    background-color: transparent;
+    border-radius: 30px;
+    z-index: -1;
+    transition: background-color 0.3s ease;
+}
+
+.button-container:hover::before {
+    background-color: #451630;
+}
+
+.button-container img {
+    width: 20%;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    padding-left: 13px;
+}
+
+.button-container p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+    padding-left: 10px;
+}
+
+#post-button-container {
+    width: 210px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #921B5B;
+    border-radius: 25px;
+    margin: 20px;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+#post-button-container h2 {
+    color: #FFFFFF;
+    font-size: 16px;
+}
+
+#post-button-container:hover {
+    background-color: white; 
+    transform: translateY(-2px);
+}
+
+#post-button-container:hover h2 {
+    color: #451630;
+}
+
+#switch-profile-button-container {
+    width: 210px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    margin: 25px;
+    cursor: pointer;
+}
+
+#switch-profile-button-container p {
+    padding-left: 15px;
+}
+
+#switch-profile-button-container::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    width: 230px;
+    height: 70px;
+    background-color: transparent;
+    border-radius: 35px;
+    z-index: -1;
+    transition: background-color 0.3s ease;
+}
+
+#switch-profile-button-container:hover::before {
+    background-color: #451630;
+}
+
+#user-pfp,
+#user-pfp img {
+    width: 50px;
+    height: 50px;
+}
+
+#user-pfp img {
+    border-radius: 25px;
+}
+
+#user-id {
+    display: flex;
+    flex-direction: column;
+    color: #FFFFFF;
+}
+
+#three-dots {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: 10px;
+}
+
+#three-dots img {
+    width: 25px;
+    height: 25px;
+}
+
+#middle-panel {
+    min-width: 600px;
+}
+
+#right-panel {
+    width: 350px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    border-left: 1px solid #FFFFFF;
+}
+
+#search-bar {
+    width: 330px; 
+    height: 50px;
+    border-radius: 25px;
+    background-color: #451630;
+    margin: 10px;
+    display: flex;
+    position: relative; 
+    align-items: center; 
+    padding: 0 15px;
+    box-sizing: border-box; 
+}
+
+#search-icon {
+    position: absolute;
+    left: 20px;
+    width: 18px; 
+    height: 18px; 
+}
+
+#search-input {
+    width: 100%; 
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    padding-left: 35px; 
+}
+
+#search-input::placeholder {
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+}
+
+#subscription-tab {
+    width: 330px;
+    height: 165px;
+    background-color: #451630;
+    border-radius: 20px;
+    box-sizing: border-box; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-left: 20px;
+    padding-bottom: 5px;
+}
+
+#subscription-tab h2,
+#subscription-tab p {
+    color: white;
+}
+
+#subscription-tab h2 {
+    font-size: 20px;
+}
+
+#subscription-tab p {
+    font-size: 14px;
+}
+
+#subscribe-button {
+    width: 120px;
+    height: 40px;
+    background-color: #921B5B; 
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.5s ease;
+}
+
+#subscribe-button:hover {
+    background-color: white; 
+    color: #451630;
+    transform: translateY(-2px);
+}
+
+#trends-tab {
+    margin: 10px;
+    width: 330px;
+    background-color: #451630;
+    border-radius: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding-top: 5px;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    position: relative;
+}
+
+#trends-tab h2 {
+    color: white;
+    font-size: 20px;
+}
+
+#trends-tab small {
+    color: gray;
+    font-size: 12px;
+}
+
+#trends-tab p {
+    color: white;
+    font-size: 14px;
+}
+
+.trend-container {
+    width: 290px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.three-dots {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.three-dots img {
+    height: 12px;
+}
