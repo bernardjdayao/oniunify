@@ -11,51 +11,55 @@
     <div id="auth-page">
         <div id="concealer"></div>
         <div class="form-divider">
-            <div id="sign-in-panel">
-                <div class="input-field">
-                    <input type="text" id="sign-in-username" required>
-                    <label for="sign-in-username">Username</label>
+            <form name="sign-in-form" onsubmit="signIn(event)">
+                <div id="sign-in-panel">
+                    <div class="input-field">
+                        <input type="text" id="sign-in-username" required>
+                        <label for="sign-in-username">Username</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" id="sign-in-password" required>
+                        <label for="sign-in-password">Password</label>
+                    </div>
+                    <div id="button-area">
+                        <button type="submit" id="sign-in-button">Sign In</button>
+                    </div>
+                    <div class="text-area">
+                        <p><b id="forgot-password">Forgot your password?</b></p>
+                    </div>
+                    <div class="text-area">
+                        <p>Need an account? <b id="sign-up">Sign Up</b></p>
+                    </div>
                 </div>
-                <div class="input-field">
-                    <input type="password" id="sign-in-password" required>
-                    <label for="sign-in-password">Password</label>
-                </div>
-                <div id="button-area">
-                    <button onclick="signIn()" id="sign-in-button">Sign In</button>
-                </div>
-                <div class="text-area">
-                    <p><b id="forgot-password">Forgot your password?</b></p>
-                </div>
-                <div class="text-area">
-                    <p>Need an account? <b id="sign-up">Sign Up</b></p>
-                </div>
-            </div>
+            </form>
         </div>
         <div class="form-divider">
-            <div id="sign-up-panel">
-                <div class="input-field">
-                    <input type="text" id="sign-up-username" required>
-                    <label for="sign-up-username">Username</label>
+            <form name="sign-up-form" onsubmit="signUp(event)">
+                <div id="sign-up-panel">
+                    <div class="input-field">
+                        <input type="text" id="sign-up-username" required>
+                        <label for="sign-up-username">Username</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" id="sign-up-password" required>
+                        <label for="sign-up-password">Password</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" id="confirm-password" required>
+                        <label for="confirm-password">Confirm Password</label>
+                    </div>
+                    <div id="button-area">
+                        <button type="submit" id="sign-up-button">Sign Up</button>
+                    </div>
+                    <div class="text-area">
+                        <p>Already have an account? <b id="sign-in">Sign In</b></p>
+                    </div>
                 </div>
-                <div class="input-field">
-                    <input type="text" id="email" required>
-                    <label for="email">Email</label>
-                </div>
-                <div class="input-field">
-                    <input type="password" id="sign-up-password" required>
-                    <label for="sign-up-password">Password</label>
-                </div>
-                <div class="input-field">
-                    <input type="password" id="confirm-password" required>
-                    <label for="confirm-password">Confirm Password</label>
-                </div>
-                <div id="button-area">
-                    <button onclick="signUp()" id="sign-up-button">Sign Up</button>
-                </div>
-                <div class="text-area">
-                    <p>Already have an account? <b id="sign-in">Sign In</b></p>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
     <div id="home-page">

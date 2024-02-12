@@ -67,7 +67,7 @@ async function signInApi(data) {
             localStorage.setItem('token', token);
             switchPages(false);
         } else {
-            alert("User not found! Try signing up first");
+            alert("Invalid username or incorrect password!");
             const errorData = await response.json();
             console.error(errorData);
         }
@@ -76,7 +76,9 @@ async function signInApi(data) {
     }
 }
 
-function signIn() {
+function signIn(event) {
+    event.preventDefault();
+
     const username = document.getElementById('sign-in-username').value;
     const password = document.getElementById('sign-in-password').value;
 
@@ -110,7 +112,9 @@ async function signUpApi(data) {
     }
 }
 
-function signUp() {
+function signUp(event) {
+    event.preventDefault();
+    
     const password = document.getElementById('sign-up-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
 
