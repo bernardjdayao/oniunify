@@ -18,8 +18,12 @@ function toggleConcealer() {
     }
 }
 
-var signInButton = document.getElementById('sign-in');
-var signUpButton = document.getElementById('sign-up');
+var createPostTextarea = document.getElementById('create-post-textarea');
+
+createPostTextarea.addEventListener('input', function () {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+});
 
 window.addEventListener("load", () => {
     const concealer = document.getElementById('concealer');
@@ -31,6 +35,9 @@ window.addEventListener("load", () => {
     concealer.style.left = '50vw'
     signInPanel.style.transform = 'scale(1)';
 });
+
+var signInButton = document.getElementById('sign-in');
+var signUpButton = document.getElementById('sign-up');
 
 signInButton.addEventListener('click', toggleConcealer);
 signUpButton.addEventListener('click', toggleConcealer);
