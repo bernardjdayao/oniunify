@@ -65,7 +65,7 @@
     <div id="home-page">
 		<div class="home-divider" id="left-panel">
             <div id="top-container">
-                <div class="button-container">
+                <div id="home-page-button" class="button-container">
                     <img src="assets/home_icon.png" alt="Explore Icon" />
                     <p>Home</p>
                 </div>
@@ -81,7 +81,7 @@
                     <img src="assets/messages_icon.png" alt="Explore Icon" />
                     <p>Message</p>
                 </div>
-                <div class="button-container">
+                <div id="profile-page-button" class="button-container">
                     <img src="assets/profile_icon.png" alt="Explore Icon" />
                     <p>Profile</p>
                 </div>
@@ -98,7 +98,7 @@
                     </div>
                     <div id="user-id">
                         <p>USERNAME</p>
-                        <p>@handler</p>
+                        <p>@handle</p>
                     </div>
                     <div id="three-dots">
                         <img src="assets/three_dots_white.png">
@@ -107,29 +107,87 @@
             </div>
         </div>
 		<div class="home-divider" id="middle-panel">
-            <div id="top-nav-container">
-                <div class="top-nav-split">
-                    <p><b>For You</b></p>
+            <div id="timeline-page">
+                <div class="top-nav-container">
+                    <div class="top-nav-split">
+                        <p><b>For You</b></p>
+                    </div>
+                    <div class="top-nav-split">
+                        <p><b>Following</b></p>
+                    </div>
+                    <div id="top-nav-slider"></div>
+                    <div id="settings-icon">
+                        <div id="settings-background">
+                            <img src="assets/settings_icon.png" alt="settings_icon"/>
+                        </div>
+                    </div>
                 </div>
-                <div class="top-nav-split">
-                    <p><b>Following</b></p>
+                <div id="create-post-container">
+                    <div id="create-post-left">
+                        <img src="assets/profile.png" alt="Explore Icon" />
+                    </div>
+                    <div id="create-post-right">
+                        <textarea id="create-post-textarea" placeholder="What is happening?!"></textarea>
+                        <div id="create-post-buttons">
+                            <button id="middle-post-button"><b>Post</b></button>
+                        </div>
+                    </div>
                 </div>
-                <div id="top-nav-slider"></div>
-                <div id="settings-icon">
-                    <div id="settings-background">
-                        <img src="assets/settings_icon.png" alt="settings_icon"/>
+                <div id="post-panel">
+                    <div id="post-panel-left">
+                        <img src="assets/profile.png" alt="Explore Icon" />
+                    </div>
+                    <div id="post-panel-right">
+                        <div id="post-user-info">
+                            <p id="user-id">USERNAME</p>
+                            <p id="handle">@handle</p>
+                        </div>
+                        <p id="post">blah blah blah</p>
+                        <div id="post-panel-buttons"></div>
                     </div>
                 </div>
             </div>
-            <div id="create-post-container">
-                <div id="create-post-left">
-                    <img src="assets/profile.png" alt="Explore Icon" />
-                </div>
-                <div id="create-post-right">
-                    <textarea id="create-post-textarea" placeholder="What is happening?!"></textarea>
-                    <div id="create-post-buttons">
-                        <button id="middle-post-button"><b>Post</b></button>
+            <div id="profile-page">
+                <div class="top-nav-container">
+                    <div id="back-icon">
+                        <div id="back-background">
+                            <img src="assets/back_button.png" alt="back_button" />
+                        </div>
                     </div>
+                    <div id="user-info">
+                        <p class="profile-username"><b>USERNAME</b></p>
+                        <p>0 posts</p>
+                    </div>
+                </div>
+                <div id="banner-photo-container">
+
+                </div>
+                <div id="profile-info">
+                    <div id="left-split" class="profile-info-split">
+                        <div id="profile-photo">
+                            <img src="assets/profile.png">
+                        </div>
+                        <div id="profile-name">
+                            <p class="profile-username"><b>USERNAME<b></p>
+                            <p>@handle</p>
+                        </div>
+                        <div id="follow-count">
+                            <p id="following-count">0 Following</p>
+                            <p id="follower-count">0 Followers</p>
+                        </div>
+                    </div>
+                    <div id="right-split" class="profile-info-split">
+                        <button id="edit-profile"><b>Edit Profile</b></button>
+                    </div>
+                </div>
+                <div id="profile-page-tabs">
+                    <div class="profile-tabs-split">
+                        <p><b>Tweets</b></p>
+                    </div>
+                    <div class="profile-tabs-split">
+                        <p><b>Likes</b></p>
+                    </div>
+                    <div id="profile-tabs-slider"></div>
                 </div>
             </div>
         </div>

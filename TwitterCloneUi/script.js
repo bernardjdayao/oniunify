@@ -29,11 +29,31 @@ window.addEventListener("load", () => {
     const concealer = document.getElementById('concealer');
     const signInPanel = document.getElementById('sign-in-panel');
     const homePage = document.getElementById('home-page');
+    const profilePage = document.getElementById('profile-page');
 
     homePage.style.display = 'none';
+    profilePage.style.display = 'none';
     concealer.style.top = '0vh';
     concealer.style.left = '50vw'
     signInPanel.style.transform = 'scale(1)';
+});
+
+const homePageButton = document.getElementById('home-page-button');
+homePageButton.addEventListener('click', function () {
+    const profilePage = document.getElementById('profile-page');
+    const timelinePage = document.getElementById('timeline-page');
+
+    profilePage.style.display = 'none';
+    timelinePage.style.display = 'flex';
+});
+
+const profilePageButton = document.getElementById('profile-page-button');
+profilePageButton.addEventListener('click', function () {
+    const profilePage = document.getElementById('profile-page');
+    const timelinePage = document.getElementById('timeline-page');
+
+    profilePage.style.display = 'flex';
+    timelinePage.style.display = 'none';
 });
 
 var signInButton = document.getElementById('sign-in');

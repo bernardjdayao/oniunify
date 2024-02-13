@@ -316,7 +316,13 @@ html {
     justify-content: flex-start;
 }
 
-#top-nav-container {
+#timeline-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.top-nav-container {
     width: 600px;
     height: 60px;
     border-bottom: 1px solid white;
@@ -325,7 +331,7 @@ html {
     top: 0;
 }
 
-#top-nav-container::before {
+.top-nav-container::before {
     content: "";
     position: absolute;
     top: 0;
@@ -392,7 +398,7 @@ html {
 
 #create-post-container {
     width: 600px;
-    min-height: 100px;
+    min-height: 140px;
     display: flex;
     border-bottom: 1px solid white;
 }
@@ -449,13 +455,202 @@ html {
     cursor: pointer;
     font-size: 14px;
     transition: transform 0.5s ease;
-    margin: 0px 20px 10px 0px;
+    margin: 10px 20px 10px 0px;
 }
 
 #middle-post-button:hover {
     background-color: white; 
     color: #451630;
     transform: translateY(-2px);
+}
+
+#post-panel {
+    width: 600px;
+    min-height: 100px;
+    display: flex;
+    border-bottom: 1px solid white;
+}
+
+#post-panel-left {
+    display: flex;
+    margin-right: 0px;
+}
+
+#post-panel-left img {
+    height: 40px;
+    margin: 20px 0px 20px 20px;
+}
+
+#post-panel-right {
+    width: 550px;
+    display: flex;
+}
+
+#post-user-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+#post-panel-buttons {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#user-info {
+    color: white;
+}
+
+#profile-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#back-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#back-background img {
+    width: 20px;
+    height: 20px;
+}
+
+#back-background {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.5s ease;
+}
+
+#back-icon:hover #back-background{
+    background-color: rgb(255, 255, 255, 0.4);
+}
+
+#banner-photo-container {
+    display: flex;
+    height: 200px;
+    background-color: #333639;
+}
+
+#profile-info {
+    display: flex;
+    padding-left: 20px;
+    margin-bottom: 5px;
+}
+
+.profile-info-split {
+    width: 290px;
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-photo,
+#profile-photo img {
+    width: 150px;
+    height: 150px;
+}
+
+#profile-photo {
+    margin-top: -75px;
+    border-radius: 75px;
+    border: 2px solid white;
+}
+
+#profile-name {
+    margin: 15px 0px 10px 0px;
+    color: white;
+    align-items: center;
+}
+
+.profile-username {
+    font-size: 20px;
+}
+
+#follow-count {
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+#following-count {
+    margin-right: 25px;
+}
+
+#right-split {
+    align-items: flex-end;
+}
+
+#edit-profile {
+    width: 120px;
+    height: 40px;
+    background-color: #921B5B; 
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: transform 0.5s ease;
+    margin: 20px;
+}
+
+#edit-profile:hover {
+    background-color: white; 
+    color: #451630;
+    transform: translateY(-2px);
+}
+
+#profile-page-tabs {
+    width: 600px;
+    height: 60px;
+    border-bottom: 1px solid white;
+    display: flex;
+    position: relative;
+}
+
+#profile-page-tabs::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+.profile-tabs-split {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+}
+
+.profile-tabs-split:hover {
+    background-color: rgb(255, 255, 255, 0.4);
+}
+
+#profile-tabs-slider {
+    height: 5px;
+    width: 70px;
+    border-radius: 2.5px;
+    background-color: #921B5B;
+    position: absolute;
+    bottom: 0;
+    left: 115px;
 }
 
 #right-panel {
