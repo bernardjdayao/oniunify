@@ -484,18 +484,29 @@ html {
 #post-panel-right {
     width: 550px;
     display: flex;
+    flex-direction: column;
+    color: white;
 }
 
 #post-user-info {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
+    margin: 25px 20px 0px;
 }
 
 #post-panel-buttons {
-    height: 50px;
+    width: 350px;
+    height: 30px;
+    margin: 10px 20px 15px 20px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+#post-panel-buttons img {
+    width: 10%;
+    aspect-ratio: 3/2;
+    object-fit: contain;
 }
 
 #user-info {
