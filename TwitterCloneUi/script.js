@@ -25,13 +25,136 @@ createPostTextarea.addEventListener('input', function () {
     this.style.height = this.scrollHeight + 'px';
 });
 
+async function createPost() {
+    const textAreaValue = document.getElementById('create-post-textarea').value
+    const userToken = localStorage.getItem('token');
+    const postData = {
+        "content": textAreaValue
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+            body: JSON.stringify(postData),
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            createPostPanel(responseData, 'timeline');
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+function calculateTimeElapsed(dateTimePosted) {
+    const postDate = new Date(dateTimePosted);
+    const currentDate = new Date();
+
+    const timeDifference = currentDate - postDate;
+    const hoursElapsed = Math.floor(timeDifference / (1000 * 60 * 60));
+
+    return `• ${hoursElapsed}h`;
+}
+
+function createPostPanel(responseData, page) {
+    const postPanel = `
+        <div id="post-panel-${responseData.postId}" class="post-panel">
+            <div class="post-panel-left">
+                <img src="assets/profile.png" alt="Profile Icon" />
+            </div>
+            <div class="post-panel-right">
+                <div class="post-user-info">
+                    <p id="user-id" style="margin-right: 10px;"><b>${responseData.postedBy}</b></p>
+                    <p id="handle" style="margin-right: 5px;">@handle</p>
+                    <p id="time-posted">${calculateTimeElapsed(responseData.dateTimePosted)}</p>
+                </div>
+                <div id="post">
+                    <p style="margin: 0px 20px 0px 20px;">${responseData.content}</p>
+                </div>
+                <div class="post-panel-buttons">
+                    <img src="assets/comments.png">
+                    <img src="assets/retweet.png">
+                    <img src="assets/like.png" id="button-${responseData.postId}" onclick="likePost('${responseData.postId}')">
+                    <img src="assets/statistics.png">
+                </div>
+            </div>
+        </div>
+    `;
+
+    if (page == 'timeline') {
+        document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+        document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    } else if (page == 'profile'){
+        document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    }
+    
+}
+
+async function getPost() {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            
+            for (let i = 0; i < responseData.length; i++) {
+                createPostPanel(responseData[i], 'profile');
+            }
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+async function likePost(postId) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+            body: JSON.stringify({
+                "action": "like"
+            })
+        });
+
+        if (response.ok) {
+            console.log('edi wow');
+        } else {
+            console.log(postId);
+        }
+    } catch {
+        console.log(postId);
+    }
+}
+
 window.addEventListener("load", () => {
     const concealer = document.getElementById('concealer');
     const signInPanel = document.getElementById('sign-in-panel');
     const homePage = document.getElementById('home-page');
     const profilePage = document.getElementById('profile-page');
 
-    homePage.style.display = 'none';
+    /*homePage.style.display = 'none';*/
     profilePage.style.display = 'none';
     concealer.style.top = '0vh';
     concealer.style.left = '50vw'
@@ -92,6 +215,7 @@ async function signInApi(data) {
         if (response.ok) {
             const token = await response.text();
             localStorage.setItem('token', token);
+            getPost();
             switchPages(false);
         } else {
             alert("Invalid username or incorrect password!");

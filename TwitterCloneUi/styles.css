@@ -7,7 +7,7 @@
 
 body {
     font-family: "Poppins", sans-serif;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 html {
@@ -314,6 +314,7 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    border-right: 1px solid #FFFFFF;
 }
 
 #timeline-page {
@@ -464,37 +465,37 @@ html {
     transform: translateY(-2px);
 }
 
-#post-panel {
+.post-panel {
     width: 600px;
     min-height: 100px;
     display: flex;
     border-bottom: 1px solid white;
 }
 
-#post-panel-left {
+.post-panel-left {
     display: flex;
     margin-right: 0px;
 }
 
-#post-panel-left img {
+.post-panel-left img {
     height: 40px;
     margin: 20px 0px 20px 20px;
 }
 
-#post-panel-right {
+.post-panel-right {
     width: 550px;
     display: flex;
     flex-direction: column;
     color: white;
 }
 
-#post-user-info {
+.post-user-info {
     display: flex;
     justify-content: flex-start;
     margin: 25px 20px 0px;
 }
 
-#post-panel-buttons {
+.post-panel-buttons {
     width: 350px;
     height: 30px;
     margin: 10px 20px 15px 20px;
@@ -503,7 +504,7 @@ html {
     justify-content: space-between;
 }
 
-#post-panel-buttons img {
+.post-panel-buttons img {
     width: 10%;
     aspect-ratio: 3/2;
     object-fit: contain;
@@ -664,12 +665,18 @@ html {
     left: 115px;
 }
 
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-weight: 300;
+}
+
 #right-panel {
     width: 350px;
     display: flex; 
     flex-direction: column;
     align-items: center;
-    border-left: 1px solid #FFFFFF;
 }
 
 #search-bar {

@@ -129,31 +129,11 @@
                     <div id="create-post-right">
                         <textarea id="create-post-textarea" placeholder="What is happening?!"></textarea>
                         <div id="create-post-buttons">
-                            <button id="middle-post-button"><b>Post</b></button>
+                            <button id="middle-post-button" onclick="createPost()"><b>Post</b></button>
                         </div>
                     </div>
                 </div>
-                <div id="post-panel">
-                    <div id="post-panel-left">
-                        <img src="assets/profile.png" alt="Explore Icon" />
-                    </div>
-                    <div id="post-panel-right">
-                        <div id="post-user-info">
-                            <p id="user-id" style="margin-right: 10px;">USERNAME</p>
-                            <p id="handle" style="margin-right: 5px;">@handle</p>
-                            <p id="time-posted">· 3h</p>
-                        </div>
-                        <div id="post">
-                            <p style="margin: 0px 20px 0px 20px;"></p>
-                        </div>
-                        <div id="post-panel-buttons">
-                            <img src="assets/comments.png">
-                            <img src="assets/retweet.png">
-                            <img src="assets/like.png">
-                            <img src="assets/statistics.png">
-                        </div>
-                    </div>
-                </div>
+                <div id="timeline-posts-container" class="posts-container"></div>
             </div>
             <div id="profile-page">
                 <div class="top-nav-container">
@@ -197,6 +177,7 @@
                     </div>
                     <div id="profile-tabs-slider"></div>
                 </div>
+                <div id="profile-posts-container" class="posts-container"></div>
             </div>
         </div>
         <div class="home-divider" id="right-panel">
