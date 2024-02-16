@@ -55,6 +55,8 @@ async function signInApi(data) {
             const token = await response.text();
             localStorage.setItem('token', token);
             localStorage.setItem('username', data.username);
+            const profileUsername = document.getElementById('profile-username');
+            profileUsername.textContent = localStorage.getItem('username');
             getPost();
             switchPages(false);
         } else {
@@ -155,6 +157,25 @@ window.addEventListener("load", () => {
         signInPanel.style.transform = 'scale(1)';
     }
 });
+
+function toggleContainer() {
+    const container = document.getElementById('account-settings-container');
+    if (container.style.display === 'none' || container.style.display === '') {
+        container.style.display = 'block';
+        const userId = document.getElementById('user-id');
+        const rect = userId.getBoundingClientRect(); 
+        const containerHeight = container.offsetHeight;
+        const offset = 21; 
+        container.style.top = (rect.top - containerHeight - offset) + 'px'; 
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
 
 async function postCounter(username) {
     const userToken = localStorage.getItem('token');

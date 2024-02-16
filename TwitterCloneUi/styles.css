@@ -12,10 +12,8 @@ body {
 
 html {
     display: flex;
-    background-image: url(assets/background_image.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: rgb(92,42,194);
+    background: linear-gradient(36deg, rgba(92,42,194,1) 0%, rgba(121,20,109,1) 30%, rgba(209,0,75,1) 70%);
     scroll-behavior: smooth;
 }
 
@@ -186,6 +184,31 @@ html {
     flex-direction: column;
 }
 
+#logo-icon {
+    width: 210px;
+    height: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    cursor: default;
+}
+
+#logo-icon img {
+    width: 20%;
+    aspect-ratio: 3/2;
+    object-fit: contain;
+    padding-left: 13px;
+}
+
+#logo-icon p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
+    padding-left: 10px;
+}
+
 .button-container {
     width: 210px;
     height: 60px;
@@ -291,6 +314,7 @@ html {
 
 #user-id {
     display: flex;
+    position: relative; 
     flex-direction: column;
     color: #FFFFFF;
 }
@@ -307,6 +331,38 @@ html {
 #three-dots img {
     width: 25px;
     height: 25px;
+}
+
+#account-settings-container {
+    width: 230px;
+    height: 50px;
+    display: none;
+    background-color: #451630;
+    border-radius: 25px;
+    position: absolute;
+    overflow: visible;
+    z-index: 1; 
+    margin-left: 10px;
+}
+
+#account-settings-container::before {
+    content: "";
+    position: absolute;
+    bottom: -6px; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-width: 10px 10px 0;
+    border-color: #451630 transparent transparent;
+}
+
+#account-settings-container p {
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: 55px;
 }
 
 #middle-panel {

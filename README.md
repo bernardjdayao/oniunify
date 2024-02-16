@@ -1,90 +1,25 @@
-# Twitter Clone
+### Where could the concepts discussed in class be seen in your website?
 
-## Repository Owner
+Many ideas we've been taught have been put into practice throughout this page. Right from the start on the authentication page, you can see the use of HTML forms and CSS transitions. Another thing is the use of Flexboxes, which made alignments and adjustments easier, especially on the Home Page of the site. We also used a lot of JavaScript codes for dynamic updates and event handling. But most importantly, we integrated an API into the site, which, to be honest, was intimidating at first but became overall easy once you got the hang of it.
 
-- Each group must assign one repository owner
-- The repository owner must fork this repository. Only the repository owner should fork the repository
-  - This could be done by clicking the "Fork" button on the top right.
-- The repository owner must invite their goupmates as collaborators in their fork
-  - This could be done by going to Settings>Collaborators>Add people
-- The group must use the fork to collaborate on their project. They must commit and push their code in their forks.
-- The group must submit the link of the repository of the repository owner in the submission bin
+### What was your inspiration for the design of the website?
 
-## Getting Started
+Honestly, we stuck quite closely to Twitter's original design because deviating too far might complicate the ideation process. However, the driving force behind this code is rooted in the concept of onions, influencing both the color palette and the site's name, "Oniunify," a blend of the words Onion and Unify. Our ideation unfolded in a unique manner; we employed the wheel of names and incorporated all conceivable colors on the color wheel. The color selected as the best in three attempts became our final palette, ultimately settling on Red Purple. Drawing inspiration from this palette, we brainstormed and arrived at the idea of onions as the perfect representation.
 
-Follow these steps to set up and run the Twitter Clone project:
+### What was your approach in creating the content of the website?
 
-1. **Install Node.js**:
-   Make sure you have Node.js installed on your system. If not, download and install it from the official website.
+Consistently, we emphasized the mantra "Utilize divs" throughout our discussions. Given that the design heavily leans on flexboxes, we are convinced that employing divs will significantly streamline adjustments and alignments. In the initial stages, our approach involved envisioning each visible element and categorizing them into divs. This segmentation proved invaluable as it helped us discern how to effectively group and structure the various elements in our design.
 
-2. **Fork and Clone the Repository**:
+### How is your website creative?
 
-   - Clone your forked repository to your local machine using Git.
+### What did you use to deploy your website?
 
-3. **Install Dependencies**:
+Initially, we opted for GitHub Pages as our deployment platform, following the guidance provided by our instructor, who had previously instructed us on deploying personal websites using this method. However, we encountered a limitation when our instructor informed us that GitHub Pages cannot effectively deploy express.js applications. In response to this, he instructed us on using Netlify for our deployments, as it aligns with the requirements and capabilities of our express.js application.
 
-   - Open a terminal and navigate to the cloned repository.
-   - Install the API dependencies by running the command:
-     ```
-     npm run init-api
-     ```
-   - Install the UI dependencies by running the command:
-     ```
-     npm run init-ui
-     ```
+### How did you divide the tasks between the team, and what is the responsibility of each one?
 
-4. **Run the API**:
+Obviously, the team has been divided into two distinct groups: the Front-end and the Back-end. Taking charge of the Front-end development are three members from our group - Jyrel, Mariel, and Vincent. They are entrusted with crafting the user interface and overall visual experience. In parallel, Bernard has been assigned the pivotal role of handling the Back-end responsibilities, specifically focusing on the seamless integration of the API into the site. Additionally, Cid will be spearheading the general production aspects of the website, ensuring a cohesive and well-executed final product. This division of roles ensures a focused and collaborative effort, with each team member contributing their expertise to different facets of the project.
 
-   - Start the API server by running:
-     ```
-     npm run start-api
-     ```
-   - Visit `http://localhost:3000/api` in your web browser to check if the API is up and running.
-   - Visit `http://localhost:3000/api/docs` in your web browser to see the documentation of the API.
+### How did you prevent your changes in code from conflicting with each other?
 
-5. **Run the UI**:
-
-   - Open a new terminal window (keep the API terminal running).
-   - Start the UI development server with:
-     ```
-     npm run start-ui
-     ```
-   - Visit `http://127.0.0.1:8080` in your web browser to see if the UI is working.
-
-6. **Start Developing**:
-   - Begin working on the UI in the `TwitterCloneUi` folder.
-   - Add your HTML, CSS, and JS files to build the Twitter Clone interface.
-
-Remember: **Do not modify the `TwitterCloneApi` folder**; it contains essential API code.
-
-## Deployment
-
-To deploy this application you need to to use netlify. See the [documentation](https://docs.netlify.com/) to see how deployments are done in Netlify.
-
-The netlify.toml file contains nearly all the necessary values needed for deploying the application. There are no additional values needed to be set up except the JWT_KEY environment variable
-
-## Step by step Deployment Guide
-
-The deployment process for netlify should be straight forward, but here's a step by step guide in case you need it.
-
-1. Make sure that your forked is synced
-2. Visit [the netlify website](https://netlify.app/) and click on "Deploy to Netlify"
-3. Create an account and sign up with your github profile
-4. Click on the "Add new site" button and select "Import and Exisitng Project"
-5. Click on "Deploy with Github". Netlify might ask for Authentication in which case you would need to allow Netlify.
-6. Select your repository from the list.
-7. Set the site name to your desired name.
-8. The `Build command`, `Publish directory`, and `Functions directory` should be prefilled with the necessary information. If not, make sure to sync your fork and check again.
-9. Click on "Deploy" and wait a couple of minutes for netlify to deploy your application. Once netlify is finished, a green tag with the text "Published" should appear in "Production Deploys"
-10. Et voila, you have deployed your application 🎉 Now you need to step up the JWT_KEY
-
-### Setting up the JWT_KEY
-
-The JWT_KEY is used to generate the tokens and make sure that the tokens generated by the system is indeed generated by the system itself. Otherwise, attackers might be able to generate tokens themselves and compromise the system. This is why the key needs to be generated and entered manually. They must not be known to anyone but the developers.
-
-1. To setup the JWT_KEY environment variable, you would first need to generate a secret key. You may refer to [this](https://dev.to/tkirwa/generate-a-random-jwt-secret-key-39j4) tutorial for generating a secret key
-   - Once generated, your private key may look something like this `ddcb75b4f402f240234eec4bf175fa9e8c15aea5...`
-2. Once you have created a secret key, you need to add your private key as an environment variable. The name of the key must be `JWT_KEY` and the value is your private key.
-   - You may refer to [this](https://docs.netlify.com/environment-variables/get-started/#site-environment-variables) documentation for a tutorial on how to set environment variables in netlify
-
-Happy coding! 🚀🐦
+Recognizing the potential challenges, the team proactively addressed them by designating only one member to push changes to the repository. Each team member independently works on their assigned tasks, and upon reaching specific milestones, they submit their code to the designated contributor. This individual thoroughly examines the compatibility of the submitted code with the main codebase before permitting it to be pushed. This meticulous process has proven effective in minimizing merge conflicts to a significant extent. By implementing this strategy, the team has fostered a development environment where members can adapt and contribute to the site's progress with greater ease.

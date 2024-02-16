@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <title>Oniunify</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="mediaqueries.css" />
@@ -65,36 +66,40 @@
     <div id="home-page">
 		<div class="home-divider" id="left-panel">
             <div id="top-container">
+                <div id="logo-icon">
+                    <img src="assets/logo.png" alt="oniunify_icon" />
+                    <p>Oniunify</p>
+                </div>
                 <div id="home-page-button" class="button-container">
-                    <img src="assets/home_icon.png" alt="Explore Icon" />
+                    <img src="assets/home_icon.png" alt="home_icon" />
                     <p>Home</p>
                 </div>
                 <div class="button-container">
-                    <img src="assets/explore_icon.png" alt="Explore Icon" />
+                    <img src="assets/explore_icon.png" alt="explore_icon" />
                     <p>Explore</p>
                 </div>
                 <div class="button-container">
-                    <img src="assets/notifications_icon.png" alt="Explore Icon" />
+                    <img src="assets/notifications_icon.png" alt="notifications_icon" />
                     <p>Notifications</p>
                 </div>
                 <div class="button-container">
-                    <img src="assets/messages_icon.png" alt="Explore Icon" />
+                    <img src="assets/messages_icon.png" alt="message_icon" />
                     <p>Message</p>
                 </div>
                 <div id="profile-page-button" class="button-container">
-                    <img src="assets/profile_icon.png" alt="Explore Icon" />
+                    <img src="assets/profile_icon.png" alt="profile_icon" />
                     <p>Profile</p>
                 </div>
                 <div class="button-container">
-                    <img src="assets/more_icon.png" alt="Explore Icon" />
+                    <img src="assets/more_icon.png" alt="more_icon" />
                     <p>More</p>
                 </div>
                 <button id="left-post-button"><b>Post</b></button>
             </div>
             <div id="bottom-container">
-                <div id="switch-profile-button-container">
+                <div id="switch-profile-button-container" onclick="toggleContainer(event)">
                     <div id="user-pfp">
-                        <img src="assets/profile.png" alt="Explore Icon" />
+                        <img src="assets/profile.png" alt="profile_icon" />
                     </div>
                     <div id="user-id">
                         <p id="profile-username">USERNAME</p>
@@ -104,6 +109,9 @@
                         <img src="assets/three_dots_white.png">
                     </div>
                 </div>
+            </div>
+            <div id="account-settings-container">
+                <p onclick="logout()" style="cursor: pointer;">Log out @handle</p>
             </div>
         </div>
 		<div class="home-divider" id="middle-panel">
