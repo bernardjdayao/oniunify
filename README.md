@@ -11,6 +11,7 @@ Honestly, we stuck quite closely to Twitter's original design because deviating 
 Consistently, we emphasized the mantra "Utilize divs" throughout our discussions. Given that the design heavily leans on flexboxes, we are convinced that employing divs will significantly streamline adjustments and alignments. In the initial stages, our approach involved envisioning each visible element and categorizing them into divs. This segmentation proved invaluable as it helped us discern how to effectively group and structure the various elements in our design.
 
 ### How is your website creative?
+We adjusted the layout and the other content that we deem can become better and look more pleasing according to how we envision it. Making these adjustments and adding the team's twist according to the liking of the team is what made the website creative having our own taste meddled in with what already works/looks astonishing.
 
 ### What did you use to deploy your website?
 
