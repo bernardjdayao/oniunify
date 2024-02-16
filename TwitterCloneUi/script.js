@@ -18,303 +18,6 @@ function toggleConcealer() {
     }
 }
 
-var createPostTextarea = document.getElementById('create-post-textarea');
-
-createPostTextarea.addEventListener('input', function () {
-    this.style.height = 'auto';
-    this.style.height = this.scrollHeight + 'px';
-});
-
-async function createPost() {
-    const textAreaValue = document.getElementById('create-post-textarea').value
-    const userToken = localStorage.getItem('token');
-    const postData = {
-        "content": textAreaValue
-    }
-
-    try {
-        const response = await fetch('http://localhost:3000/api/v1/posts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-            body: JSON.stringify(postData),
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-            createPostPanel(responseData, 'timeline');
-        } else {
-
-        }
-    } catch {
-
-    }
-}
-
-function calculateTimeElapsed(dateTimePosted) {
-    const postDate = new Date(dateTimePosted);
-    const currentDate = new Date();
-
-    const timeDifference = currentDate - postDate;
-    const hoursElapsed = Math.floor(timeDifference / (1000 * 60 * 60));
-
-    return `• ${hoursElapsed}h`;
-}
-
-function createPostPanel(responseData, page) {
-    const postPanel = `
-        <div id="post-panel" class="post-panel">
-            <div class="post-panel-left">
-                <img src="assets/profile.png" alt="Profile Icon" />
-            </div>
-            <div class="post-panel-right">
-                <div class="post-user-info">
-                    <p id="user-id" style="margin-right: 10px;"><b>${responseData.postedBy}</b></p>
-                    <p id="handle" style="margin-right: 5px;">@handle</p>
-                    <p id="time-posted">${calculateTimeElapsed(responseData.dateTimePosted)}</p>
-                </div>
-                <div id="post">
-                    <p style="margin: 0px 20px 0px 20px;">${responseData.content}</p>
-                </div>
-                <div class="post-panel-buttons">
-                    <img src="assets/comments.png">
-                    <img src="assets/retweet.png">
-                    <img src="assets/like.png" onclick="likePost('${responseData.postId}')">
-                    <img src="assets/statistics.png">
-                </div>
-            </div>
-        </div>
-    `;
-
-    if (page == 'timeline-onload') {
-        document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
-    } else if (page == 'timeline') {
-        document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
-        document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
-    } else if (page == 'profile') {
-        document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
-    }
-    
-}
-
-async function getPost() {
-    const userToken = localStorage.getItem('token');
-
-    try {
-        const response = await fetch('http://localhost:3000/api/v1/posts', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-            const postCount = document.getElementById('post-count');
-            let postCounter = 0;
-            
-            for (let i = 0; i < responseData.length; i++) {
-                if (responseData[i].postedBy == localStorage.getItem('username')) {
-                    createPostPanel(responseData[i], 'profile');
-                    postCounter++;
-                }
-            }
-
-            postCount.textContent = `${postCounter} posts`;
-
-            for (let i = 0; i < responseData.length; i++) {
-                createPostPanel(responseData[i], 'timeline-onload');
-            }
-        } else {
-
-        }
-    } catch {
-
-    }
-}
-
-async function likePost(postId) {
-    const userToken = localStorage.getItem('token');
-
-    try {
-        const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-            body: JSON.stringify({
-                "action": "like"
-            })
-        });
-
-        if (response.ok) {
-            console.log('edi wow');
-        } else {
-            console.log(postId);
-        }
-    } catch {
-        console.log(postId);
-    }
-}
-
-async function loadProfileInfo() {
-    const userToken = localStorage.getItem('token');
-
-    try {
-        const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-
-            const profileUsername = document.getElementsByClassName('profile-username');
-            const followingCount = document.getElementById('following-count');
-            const editProfileButton = document.getElementById('edit-profile');
-            const followButton = document.getElementById('follow');
-            const unfollowButton = document.getElementById('unfollow');
-            const username = localStorage.getItem('username');
-
-            editProfileButton.style.display = 'flex';
-            followButton.style.display = 'none';
-            unfollowButton.style.display = 'none';
-
-            for (let i = 0; i < profileUsername.length; i++) {
-                profileUsername[i].textContent = username;
-            }
-
-            followingCount.textContent = `${responseData.length} Following`;
-        } else {
-
-        }
-    } catch {
-
-    }
-}
-
-const searchInput = document.getElementById('search-input');
-searchInput.addEventListener('keydown', function (event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-
-        const usernameToSearch = searchInput.value.trim();
-
-        if (usernameToSearch !== '') {
-            searchUser(usernameToSearch);
-        }
-    }
-});
-
-async function searchUser(username) {
-    const userToken = localStorage.getItem('token');
-
-    try {
-        const response = await fetch('http://localhost:3000/api/v1/users', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-
-            if (responseData.includes(username)) {
-                showUserProfile(username);
-            } else {
-                alert(`Username ${username} nor found!`);
-            }
-        } else {
-        }
-    } catch {
-
-    }
-}
-
-async function showUserProfile(username) {
-    const userToken = localStorage.getItem('token');
-
-    try {
-        const response = await fetch(`http://localhost:3000/api/v1/users/${username}/following`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-
-            const postCount = document.getElementById('post-count');
-            const profileUsername = document.getElementsByClassName('profile-username');
-            const followingCount = document.getElementById('following-count');
-            const editProfileButton = document.getElementById('edit-profile');
-            const followButton = document.getElementById('follow');
-            const unfollowButton = document.getElementById('unfollow');
-            const profilePostsContainer = document.getElementById('profile-posts-container');
-
-            editProfileButton.style.display = 'none';
-            followButton.style.display = 'flex';
-            unfollowButton.style.display = 'none';
-            profilePostsContainer.style.display = 'none';
-
-            for (let i = 0; i < profileUsername.length; i++) {
-                profileUsername[i].textContent = username;
-            }
-
-            followingCount.textContent = `${responseData.length} Following`;
-            postCount.textContent = 'hidden';
-        } else {
-
-        }
-    } catch {
-
-    }
-}
-
-window.addEventListener("load", () => {
-    const concealer = document.getElementById('concealer');
-    const signInPanel = document.getElementById('sign-in-panel');
-    const homePage = document.getElementById('home-page');
-    const profilePage = document.getElementById('profile-page');
-
-    /*homePage.style.display = 'none';*/
-    profilePage.style.display = 'none';
-    concealer.style.top = '0vh';
-    concealer.style.left = '50vw'
-    signInPanel.style.transform = 'scale(1)';
-});
-
-const homePageButton = document.getElementById('home-page-button');
-homePageButton.addEventListener('click', function () {
-    const profilePage = document.getElementById('profile-page');
-    const timelinePage = document.getElementById('timeline-page');
-
-    profilePage.style.display = 'none';
-    timelinePage.style.display = 'flex';
-});
-
-const profilePageButton = document.getElementById('profile-page-button');
-profilePageButton.addEventListener('click', function () {
-    loadProfileInfo();
-
-    const profilePage = document.getElementById('profile-page');
-    const timelinePage = document.getElementById('timeline-page');
-
-    profilePage.style.display = 'flex';
-    timelinePage.style.display = 'none';
-});
-
 var signInButton = document.getElementById('sign-in');
 var signUpButton = document.getElementById('sign-up');
 
@@ -417,5 +120,351 @@ function signUp(event) {
         };
 
         signUpApi(signUpData);
+    }
+}
+
+window.addEventListener("load", () => {
+    const concealer = document.getElementById('concealer');
+    const signInPanel = document.getElementById('sign-in-panel');
+    const homePage = document.getElementById('home-page');
+    const profilePage = document.getElementById('profile-page');
+
+    /*homePage.style.display = 'none';*/
+    profilePage.style.display = 'none';
+    concealer.style.top = '0vh';
+    concealer.style.left = '50vw'
+    signInPanel.style.transform = 'scale(1)';
+});
+
+async function postCounter(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            const postCount = document.getElementById('post-count');
+            let postCounter = 0;
+            
+            for (let i = 0; i < responseData.length; i++) {
+                if (responseData[i].postedBy == username) {
+                    postCounter++;
+                }
+            }
+
+            postCount.textContent = `${postCounter} posts`;
+        }
+    } catch {
+
+    }
+}
+
+async function loadProfileInfo() {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            postCounter(`${localStorage.getItem('username')}`);
+
+            const profileUsername = document.getElementsByClassName('profile-username');
+            for (let i = 0; i < profileUsername.length; i++) {
+                profileUsername[i].textContent = localStorage.getItem('username');
+            }
+
+            const followingCount = document.getElementById('following-count');
+            followingCount.textContent = `${responseData.length} Following`;
+
+            const editProfileButton = document.getElementById('edit-profile');
+            const followButton = document.getElementById('follow');
+            const unfollowButton = document.getElementById('unfollow');
+            editProfileButton.style.display = 'flex';
+            followButton.style.display = 'none';
+            unfollowButton.style.display = 'none';
+
+            const profilePostsContainer = document.getElementById('profile-posts-container');
+            const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
+            profilePostsContainer.style.display = 'flex';
+            searchedUserPostsContainer.style.display = 'none';
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+var homePageButton = document.getElementById('home-page-button');
+homePageButton.addEventListener('click', function () {
+    const profilePage = document.getElementById('profile-page');
+    const timelinePage = document.getElementById('timeline-page');
+
+    profilePage.style.display = 'none';
+    timelinePage.style.display = 'flex';
+});
+
+var profilePageButton = document.getElementById('profile-page-button');
+profilePageButton.addEventListener('click', function () {
+    loadProfileInfo();
+
+    const profilePage = document.getElementById('profile-page');
+    const timelinePage = document.getElementById('timeline-page');
+
+    profilePage.style.display = 'flex';
+    timelinePage.style.display = 'none';
+});
+
+async function getPost() {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            for (let i = 0; i < responseData.length; i++) {
+                if (responseData[i].postedBy == localStorage.getItem('username')) {
+                    createPostPanel(responseData[i], 'user-profile');
+                }
+            }
+
+            postCounter(`${localStorage.getItem('username')}`);
+
+            for (let i = 0; i < responseData.length; i++) {
+                createPostPanel(responseData[i], 'timeline-onload');
+            }
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+var createPostTextarea = document.getElementById('create-post-textarea');
+
+createPostTextarea.addEventListener('input', function () {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+});
+
+function calculateTimeElapsed(dateTimePosted) {
+    const postDate = new Date(dateTimePosted);
+    const currentDate = new Date();
+
+    const timeDifference = currentDate - postDate;
+    const hoursElapsed = Math.floor(timeDifference / (1000 * 60 * 60));
+
+    return `• ${hoursElapsed}h`;
+}
+
+function createPostPanel(responseData, page) {
+    const postPanel = `
+        <div id="post-panel" class="post-panel">
+            <div class="post-panel-left">
+                <img src="assets/profile.png" alt="Profile Icon" />
+            </div>
+            <div class="post-panel-right">
+                <div class="post-user-info">
+                    <p id="user-id" style="margin-right: 10px;"><b>${responseData.postedBy}</b></p>
+                    <p id="handle" style="margin-right: 5px;">@handle</p>
+                    <p id="time-posted">${calculateTimeElapsed(responseData.dateTimePosted)}</p>
+                </div>
+                <div id="post">
+                    <p style="margin: 0px 20px 0px 20px;">${responseData.content}</p>
+                </div>
+                <div class="post-panel-buttons">
+                    <img src="assets/comments.png">
+                    <img src="assets/retweet.png">
+                    <img src="assets/like.png" onclick="likePost('${responseData.postId}')">
+                    <img src="assets/statistics.png">
+                </div>
+            </div>
+        </div>
+    `;
+
+    if (page == 'timeline-onload') {
+        document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    } else if (page == 'timeline') {
+        document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+        document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    } else if (page == 'user-profile') {
+        document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    } else if (page == 'searchedUser-profile') {
+        document.getElementById('searched-user-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    }
+}
+
+async function createPost() {
+    const textAreaValue = document.getElementById('create-post-textarea').value
+    const userToken = localStorage.getItem('token');
+    const postData = {
+        "content": textAreaValue
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+            body: JSON.stringify(postData),
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            createPostPanel(responseData, 'timeline');
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+async function likePost(postId) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+            body: JSON.stringify({
+                "action": "like"
+            })
+        });
+
+        if (response.ok) {
+
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+var searchInput = document.getElementById('search-input');
+searchInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+
+        const usernameToSearch = searchInput.value.trim();
+
+        if (usernameToSearch !== '') {
+            searchUser(usernameToSearch);
+        }
+    }
+});
+
+async function searchUser(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            if (username == localStorage.getItem('username')) {
+                loadProfileInfo();
+
+                const profilePage = document.getElementById('profile-page');
+                const timelinePage = document.getElementById('timeline-page');
+
+                profilePage.style.display = 'flex';
+                timelinePage.style.display = 'none';
+            } else if (responseData.includes(username)) {
+                showUserProfile(username);
+
+                const profilePage = document.getElementById('profile-page');
+                const timelinePage = document.getElementById('timeline-page');
+
+                profilePage.style.display = 'flex';
+                timelinePage.style.display = 'none';
+            } else {
+                alert(`Username ${username} nor found!`);
+            }
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+async function showUserProfile(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${username}/following`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            const postCount = document.getElementById('post-count');
+            postCount.textContent = 'hidden';
+
+            const profileUsername = document.getElementsByClassName('profile-username');
+            for (let i = 0; i < profileUsername.length; i++) {
+                profileUsername[i].textContent = username;
+            }
+            
+            const followingCount = document.getElementById('following-count');
+            followingCount.textContent = `${responseData.length} Following`;
+
+            const editProfileButton = document.getElementById('edit-profile');
+            const followButton = document.getElementById('follow');
+            const unfollowButton = document.getElementById('unfollow');
+            editProfileButton.style.display = 'none';
+            followButton.style.display = 'flex';
+            unfollowButton.style.display = 'none';
+
+            const profilePostsContainer = document.getElementById('profile-posts-container');
+            profilePostsContainer.style.display = 'none';
+        } else {
+
+        }
+    } catch {
+
     }
 }
