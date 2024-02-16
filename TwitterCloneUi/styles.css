@@ -597,6 +597,11 @@ html {
     margin-right: 25px;
 }
 
+#following-count,
+#follower-count {
+    cursor: pointer;
+}
+
 #right-split {
     align-items: flex-end;
 }

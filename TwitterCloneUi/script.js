@@ -124,28 +124,28 @@ function signUp(event) {
 }
 
 window.addEventListener("load", () => {
-    const concealer = document.getElementById('concealer');
-    const signInPanel = document.getElementById('sign-in-panel');
+    const userToken = localStorage.getItem('token');
+
+    const body = document.body;
     const authPage = document.getElementById('auth-page');
     const homePage = document.getElementById('home-page');
     const profilePage = document.getElementById('profile-page');
-    const body = document.body;
-
-    const userToken = localStorage.getItem('token');
+    const concealer = document.getElementById('concealer');
+    const signInPanel = document.getElementById('sign-in-panel');
+    const profileUsername = document.getElementById('profile-username');
 
     if (userToken) {
-        const profileUsername = document.getElementById('profile-username');
-        profileUsername.textContent = localStorage.getItem('username');
-        
+        body.style.overflowX = 'hidden';
+        body.style.overflowY = 'auto';
         authPage.style.display = 'none';
         homePage.style.display = 'flex';
         profilePage.style.display = 'none';
         concealer.style.top = '0vh';
         concealer.style.left = '50vw';
         signInPanel.style.transform = 'scale(0)';
+        profileUsername.textContent = localStorage.getItem('username');
+
         getPost()
-        body.style.overflowX = 'hidden';
-        body.style.overflowY = 'auto';
     } else {
         authPage.style.display = 'flex';
         homePage.style.display = 'none';
@@ -171,6 +171,7 @@ async function postCounter(username) {
         if (response.ok) {
             const responseData = await response.json();
             const postCount = document.getElementById('post-count');
+            
             let postCounter = 0;
             
             for (let i = 0; i < responseData.length; i++) {
@@ -222,8 +223,6 @@ async function loadProfileInfo() {
             const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
             profilePostsContainer.style.display = 'flex';
             searchedUserPostsContainer.style.display = 'none';
-        } else {
-
         }
     } catch {
 
@@ -276,8 +275,6 @@ async function getPost() {
             for (let i = 0; i < responseData.length; i++) {
                 createPostPanel(responseData[i], 'timeline-onload');
             }
-        } else {
-
         }
     } catch {
 
@@ -298,7 +295,7 @@ function calculateTimeElapsed(dateTimePosted) {
     const timeDifference = currentDate - postDate;
     const hoursElapsed = Math.floor(timeDifference / (1000 * 60 * 60));
 
-    return `• ${hoursElapsed}h`;
+    return `· ${hoursElapsed}h`;
 }
 
 function createPostPanel(responseData, page) {
@@ -319,7 +316,7 @@ function createPostPanel(responseData, page) {
                 <div class="post-panel-buttons">
                     <img src="assets/comments.png">
                     <img src="assets/retweet.png">
-                    <img src="assets/like.png" onclick="likePost('${responseData.postId}')">
+                    <img src="assets/like.png" onclick="togglePostLike('${responseData.postId}')">
                     <img src="assets/statistics.png">
                 </div>
             </div>
@@ -339,8 +336,9 @@ function createPostPanel(responseData, page) {
 }
 
 async function createPost() {
-    const textAreaValue = document.getElementById('create-post-textarea').value;
     const userToken = localStorage.getItem('token');
+    const textAreaValue = document.getElementById('create-post-textarea').value;
+
     const postData = {
         "content": textAreaValue
     }
@@ -358,71 +356,32 @@ async function createPost() {
         if (response.ok) {
             const responseData = await response.json();
             createPostPanel(responseData, 'timeline');
-        } else {
-
         }
     } catch {
 
-    }
-}
-
-async function isPostLiked(postId) {
-    const userToken = localStorage.getItem('token');
-
-    try {
-        const response = await fetch('http://localhost:3000/api/v1/posts', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`
-            },
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-            
-            for (let i = 0; i < responseData.length; i++) {
-                if (responseData[i].postId == postId) {
-                    if (responseData[i].likes.includes(localStorage.getItem('username'))) {
-                        return true;
-                    }
-                }
-            }
-        } else {
-            return false;
-        }
-    } catch {
-        return false;
     }
 }
 
 async function likePost(postId) {
     const userToken = localStorage.getItem('token');
-    const postLiked = await isPostLiked(postId);
 
-    if (postLiked) {
-        await unlikePost(postId);
-    } else {
-        try {
-            const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${userToken}`
-                },
-                body: JSON.stringify({
-                    "action": "like"
-                })
-            });
-    
-            if (response.ok) {
-                alert('Liked post!');
-            } else {
-    
-            }
-        } catch {
-    
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+            body: JSON.stringify({
+                "action": "like"
+            })
+        });
+
+        if (response.ok) {
+            alert('Liked post!');
         }
+    } catch {
+
     }
 }
 
@@ -443,8 +402,36 @@ async function unlikePost(postId) {
 
         if (response.ok) {
             alert('Unliked post!');
-        } else {
+        }
+    } catch {
 
+    }
+}
+
+async function togglePostLike(postId) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            
+            for (let i = 0; i < responseData.length; i++) {
+                if (responseData[i].postId == postId) {
+                    if (responseData[i].likes.includes(localStorage.getItem('username'))) {
+                        await unlikePost(postId);
+                    } else {
+                        likePost(postId);
+                    }
+                }
+            }
         }
     } catch {
 
@@ -496,10 +483,8 @@ async function searchUser(username) {
                 profilePage.style.display = 'flex';
                 timelinePage.style.display = 'none';
             } else {
-                alert(`Username ${username} nor found!`);
+                alert(`Username "${username}" was not found!`);
             }
-        } else {
-
         }
     } catch {
 
@@ -583,8 +568,6 @@ async function showUserProfile(username) {
 
                 searchedUserPostsContainer.style.display = 'none';
             }
-        } else {
-
         }
     } catch {
 
@@ -613,8 +596,6 @@ async function showUserPosts(username) {
             }
 
             postCounter(username);
-        } else {
-
         }
     } catch {
 
@@ -622,8 +603,8 @@ async function showUserPosts(username) {
 }
 
 async function followUser() {
-    const profileUsername = document.getElementsByClassName('profile-username');
     const userToken = localStorage.getItem('token');
+    const profileUsername = document.getElementsByClassName('profile-username');
 
     try {
         const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following/${profileUsername[0].textContent}`, {
@@ -644,8 +625,6 @@ async function followUser() {
 
             const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
             searchedUserPostsContainer.style.display = 'flex';
-        } else {
-
         }
     } catch {
 
@@ -680,8 +659,6 @@ async function unfollowUser() {
             while (searchedUserPostsContainer.firstChild) {
                 searchedUserPostsContainer.removeChild(searchedUserPostsContainer.firstChild);
             }
-        } else {
-
         }
     } catch {
 
