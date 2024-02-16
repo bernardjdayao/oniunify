@@ -601,9 +601,12 @@ html {
     align-items: flex-end;
 }
 
-#edit-profile {
+.right-split-button {
     width: 120px;
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #921B5B; 
     color: white;
     border: none;
@@ -615,7 +618,7 @@ html {
     margin: 20px;
 }
 
-#edit-profile:hover {
+.right-split-button:hover {
     background-color: white; 
     color: #451630;
     transform: translateY(-2px);

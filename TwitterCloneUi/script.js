@@ -65,7 +65,7 @@ function calculateTimeElapsed(dateTimePosted) {
 
 function createPostPanel(responseData, page) {
     const postPanel = `
-        <div id="post-panel-${responseData.postId}" class="post-panel">
+        <div id="post-panel" class="post-panel">
             <div class="post-panel-left">
                 <img src="assets/profile.png" alt="Profile Icon" />
             </div>
@@ -81,17 +81,19 @@ function createPostPanel(responseData, page) {
                 <div class="post-panel-buttons">
                     <img src="assets/comments.png">
                     <img src="assets/retweet.png">
-                    <img src="assets/like.png" id="button-${responseData.postId}" onclick="likePost('${responseData.postId}')">
+                    <img src="assets/like.png" onclick="likePost('${responseData.postId}')">
                     <img src="assets/statistics.png">
                 </div>
             </div>
         </div>
     `;
 
-    if (page == 'timeline') {
+    if (page == 'timeline-onload') {
+        document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
+    } else if (page == 'timeline') {
         document.getElementById('timeline-posts-container').insertAdjacentHTML('afterbegin', postPanel);
         document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
-    } else if (page == 'profile'){
+    } else if (page == 'profile') {
         document.getElementById('profile-posts-container').insertAdjacentHTML('afterbegin', postPanel);
     }
     
@@ -111,9 +113,20 @@ async function getPost() {
 
         if (response.ok) {
             const responseData = await response.json();
+            const postCount = document.getElementById('post-count');
+            let postCounter = 0;
             
             for (let i = 0; i < responseData.length; i++) {
-                createPostPanel(responseData[i], 'profile');
+                if (responseData[i].postedBy == localStorage.getItem('username')) {
+                    createPostPanel(responseData[i], 'profile');
+                    postCounter++;
+                }
+            }
+
+            postCount.textContent = `${postCounter} posts`;
+
+            for (let i = 0; i < responseData.length; i++) {
+                createPostPanel(responseData[i], 'timeline-onload');
             }
         } else {
 
@@ -148,6 +161,127 @@ async function likePost(postId) {
     }
 }
 
+async function loadProfileInfo() {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            const profileUsername = document.getElementsByClassName('profile-username');
+            const followingCount = document.getElementById('following-count');
+            const editProfileButton = document.getElementById('edit-profile');
+            const followButton = document.getElementById('follow');
+            const unfollowButton = document.getElementById('unfollow');
+            const username = localStorage.getItem('username');
+
+            editProfileButton.style.display = 'flex';
+            followButton.style.display = 'none';
+            unfollowButton.style.display = 'none';
+
+            for (let i = 0; i < profileUsername.length; i++) {
+                profileUsername[i].textContent = username;
+            }
+
+            followingCount.textContent = `${responseData.length} Following`;
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+const searchInput = document.getElementById('search-input');
+searchInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+
+        const usernameToSearch = searchInput.value.trim();
+
+        if (usernameToSearch !== '') {
+            searchUser(usernameToSearch);
+        }
+    }
+});
+
+async function searchUser(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            if (responseData.includes(username)) {
+                showUserProfile(username);
+            } else {
+                alert(`Username ${username} nor found!`);
+            }
+        } else {
+        }
+    } catch {
+
+    }
+}
+
+async function showUserProfile(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${username}/following`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            const postCount = document.getElementById('post-count');
+            const profileUsername = document.getElementsByClassName('profile-username');
+            const followingCount = document.getElementById('following-count');
+            const editProfileButton = document.getElementById('edit-profile');
+            const followButton = document.getElementById('follow');
+            const unfollowButton = document.getElementById('unfollow');
+            const profilePostsContainer = document.getElementById('profile-posts-container');
+
+            editProfileButton.style.display = 'none';
+            followButton.style.display = 'flex';
+            unfollowButton.style.display = 'none';
+            profilePostsContainer.style.display = 'none';
+
+            for (let i = 0; i < profileUsername.length; i++) {
+                profileUsername[i].textContent = username;
+            }
+
+            followingCount.textContent = `${responseData.length} Following`;
+            postCount.textContent = 'hidden';
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
 window.addEventListener("load", () => {
     const concealer = document.getElementById('concealer');
     const signInPanel = document.getElementById('sign-in-panel');
@@ -172,6 +306,8 @@ homePageButton.addEventListener('click', function () {
 
 const profilePageButton = document.getElementById('profile-page-button');
 profilePageButton.addEventListener('click', function () {
+    loadProfileInfo();
+
     const profilePage = document.getElementById('profile-page');
     const timelinePage = document.getElementById('timeline-page');
 
@@ -215,6 +351,7 @@ async function signInApi(data) {
         if (response.ok) {
             const token = await response.text();
             localStorage.setItem('token', token);
+            localStorage.setItem('username', data.username);
             getPost();
             switchPages(false);
         } else {
