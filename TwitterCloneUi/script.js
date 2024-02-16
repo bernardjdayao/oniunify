@@ -441,16 +441,13 @@ async function isUserFollowed(username) {
         if (response.ok) {
             const responseData = await response.json();
 
-            if (responseData.includes(username)) {
-                return true;
-            } else {
-                return false;
-            }
+            return responseData.includes(username);
+                
         } else {
-
+            return false;
         }
     } catch {
-
+        return false;
     }
 }
 
@@ -486,19 +483,27 @@ async function showUserProfile(username) {
             const followButton = document.getElementById('follow');
             const unfollowButton = document.getElementById('unfollow');
 
-            if (isUserFollowed(username)) {
+            const profilePostsContainer = document.getElementById('profile-posts-container');
+            const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
+            profilePostsContainer.style.display = 'none';
+
+            while (searchedUserPostsContainer.firstChild) {
+                searchedUserPostsContainer.removeChild(searchedUserPostsContainer.firstChild);
+            }
+
+            if (await isUserFollowed(username)) {
                 followButton.style.display = 'none';
                 unfollowButton.style.display = 'flex';
 
-                const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
                 searchedUserPostsContainer.style.display = 'flex';
+
+                showUserPosts(username);
             } else {
                 followButton.style.display = 'flex';
                 unfollowButton.style.display = 'none';
+
+                searchedUserPostsContainer.style.display = 'none';
             }
-            
-            const profilePostsContainer = document.getElementById('profile-posts-container');
-            profilePostsContainer.style.display = 'none';
         } else {
 
         }
@@ -582,6 +587,9 @@ async function unfollowUser() {
         });
 
         if (response.ok) {
+            const postCount = document.getElementById('post-count');
+            postCount.textContent = 'hidden';
+            
             const followButton = document.getElementById('follow');
             const unfollowButton = document.getElementById('unfollow');
             followButton.style.display = 'flex';
