@@ -126,14 +126,34 @@ function signUp(event) {
 window.addEventListener("load", () => {
     const concealer = document.getElementById('concealer');
     const signInPanel = document.getElementById('sign-in-panel');
+    const authPage = document.getElementById('auth-page');
     const homePage = document.getElementById('home-page');
     const profilePage = document.getElementById('profile-page');
+    const body = document.body;
 
-    /*homePage.style.display = 'none';*/
-    profilePage.style.display = 'none';
-    concealer.style.top = '0vh';
-    concealer.style.left = '50vw'
-    signInPanel.style.transform = 'scale(1)';
+    const userToken = localStorage.getItem('token');
+
+    if (userToken) {
+        const profileUsername = document.getElementById('profile-username');
+        profileUsername.textContent = localStorage.getItem('username');
+        
+        authPage.style.display = 'none';
+        homePage.style.display = 'flex';
+        profilePage.style.display = 'none';
+        concealer.style.top = '0vh';
+        concealer.style.left = '50vw';
+        signInPanel.style.transform = 'scale(0)';
+        getPost()
+        body.style.overflowX = 'hidden';
+        body.style.overflowY = 'auto';
+    } else {
+        authPage.style.display = 'flex';
+        homePage.style.display = 'none';
+        profilePage.style.display = 'none';
+        concealer.style.top = '0vh';
+        concealer.style.left = '50vw';
+        signInPanel.style.transform = 'scale(1)';
+    }
 });
 
 async function postCounter(username) {
@@ -346,7 +366,67 @@ async function createPost() {
     }
 }
 
+async function isPostLiked(postId) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            
+            for (let i = 0; i < responseData.length; i++) {
+                if (responseData[i].postId == postId) {
+                    if (responseData[i].likes.includes(localStorage.getItem('username'))) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+    } catch {
+        return false;
+    }
+}
+
 async function likePost(postId) {
+    const userToken = localStorage.getItem('token');
+    const postLiked = await isPostLiked(postId);
+
+    if (postLiked) {
+        await unlikePost(postId);
+    } else {
+        try {
+            const response = await fetch(`http://localhost:3000/api/v1/posts/${postId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userToken}`
+                },
+                body: JSON.stringify({
+                    "action": "like"
+                })
+            });
+    
+            if (response.ok) {
+                alert('Liked post!');
+            } else {
+    
+            }
+        } catch {
+    
+        }
+    }
+}
+
+async function unlikePost(postId) {
     const userToken = localStorage.getItem('token');
 
     try {
@@ -357,12 +437,12 @@ async function likePost(postId) {
                 'Authorization': `Bearer ${userToken}`
             },
             body: JSON.stringify({
-                "action": "like"
+                "action": "unlike"
             })
         });
 
         if (response.ok) {
-
+            alert('Unliked post!');
         } else {
 
         }
@@ -442,7 +522,6 @@ async function isUserFollowed(username) {
             const responseData = await response.json();
 
             return responseData.includes(username);
-                
         } else {
             return false;
         }
