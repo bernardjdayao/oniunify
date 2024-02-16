@@ -319,7 +319,7 @@ function createPostPanel(responseData, page) {
 }
 
 async function createPost() {
-    const textAreaValue = document.getElementById('create-post-textarea').value
+    const textAreaValue = document.getElementById('create-post-textarea').value;
     const userToken = localStorage.getItem('token');
     const postData = {
         "content": textAreaValue
@@ -426,6 +426,34 @@ async function searchUser(username) {
     }
 }
 
+async function isUserFollowed(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            if (responseData.includes(username)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
 async function showUserProfile(username) {
     const userToken = localStorage.getItem('token');
 
@@ -453,14 +481,118 @@ async function showUserProfile(username) {
             followingCount.textContent = `${responseData.length} Following`;
 
             const editProfileButton = document.getElementById('edit-profile');
+            editProfileButton.style.display = 'none';
+
             const followButton = document.getElementById('follow');
             const unfollowButton = document.getElementById('unfollow');
-            editProfileButton.style.display = 'none';
+
+            if (isUserFollowed(username)) {
+                followButton.style.display = 'none';
+                unfollowButton.style.display = 'flex';
+
+                const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
+                searchedUserPostsContainer.style.display = 'flex';
+            } else {
+                followButton.style.display = 'flex';
+                unfollowButton.style.display = 'none';
+            }
+            
+            const profilePostsContainer = document.getElementById('profile-posts-container');
+            profilePostsContainer.style.display = 'none';
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+async function showUserPosts(username) {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/v1/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            for (let i = 0; i < responseData.length; i++) {
+                if (responseData[i].postedBy == username) {
+                    createPostPanel(responseData[i], 'searchedUser-profile');
+                }
+            }
+
+            postCounter(username);
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+async function followUser() {
+    const profileUsername = document.getElementsByClassName('profile-username');
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following/${profileUsername[0].textContent}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const followButton = document.getElementById('follow');
+            const unfollowButton = document.getElementById('unfollow');
+            followButton.style.display = 'none';
+            unfollowButton.style.display = 'flex';
+
+            showUserPosts(`${profileUsername[0].textContent}`);
+
+            const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
+            searchedUserPostsContainer.style.display = 'flex';
+        } else {
+
+        }
+    } catch {
+
+    }
+}
+
+async function unfollowUser() {
+    const profileUsername = document.getElementsByClassName('profile-username');
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/users/${localStorage.getItem('username')}/following/${profileUsername[0].textContent}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            },
+        });
+
+        if (response.ok) {
+            const followButton = document.getElementById('follow');
+            const unfollowButton = document.getElementById('unfollow');
             followButton.style.display = 'flex';
             unfollowButton.style.display = 'none';
 
-            const profilePostsContainer = document.getElementById('profile-posts-container');
-            profilePostsContainer.style.display = 'none';
+            const searchedUserPostsContainer = document.getElementById('searched-user-posts-container');
+            searchedUserPostsContainer.style.display = 'none';
+
+            while (searchedUserPostsContainer.firstChild) {
+                searchedUserPostsContainer.removeChild(searchedUserPostsContainer.firstChild);
+            }
         } else {
 
         }
